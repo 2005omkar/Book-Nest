@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Payment History</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    table {
+      width: 90%;
+      margin: 2rem auto;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 1rem;
+      text-align: center;
+    }
+    th {
+      background: var(--green);
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <h1 style="text-align:center; margin:2rem;">💳 All Payment History</h1>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Order ID</th>
+        <th>Name</th>
+        <th>Amount</th>
+        <th>Date</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody id="order-history"></tbody>
+  </table>
+
+  <script>
+    async function loadOrders() {
+      const res = await fetch("http://localhost:5000/orders");
+      const orders = await res.json();
+      const table = document.getElementById("order-history");
+
+      if (orders.length === 0) {
+        table.innerHTML = "<tr><td colspan='5'>No payment history found.</td></tr>";
+      } else {
+        orders.forEach(order => {
+          table.innerHTML += `
+            <tr>
+              <td>${order.id}</td>
+              <td>${order.name}</td>
+              <td>${order.amount}</td>
+              <td>${order.date}</td>
+              <td>${order.status}</td>
+            </tr>
+          `;
+        });
+      }
+    }
+    loadOrders();
+  </script>
+</body>
+</html>
